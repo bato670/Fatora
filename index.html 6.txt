@@ -1,0 +1,2023 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>فوترَة – منصة الفوترة الإلكترونية الذكية</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700&display=swap');
+
+  :root {
+    --gold: #A17136;
+    --gold-light: #C4924A;
+    --gold-pale: #E8D5B7;
+    --bg: #F4EFE6;
+    --bg-card: #FFFFFF;
+    --text-dark: #1A1A1A;
+    --text-mid: #4A4A4A;
+    --text-muted: #8A8A8A;
+    --border: #E0D8CC;
+    --green: #2E7D52;
+    --green-bg: #EBF5EF;
+    --amber: #B07A00;
+    --amber-bg: #FFF8E6;
+    --red: #C0392B;
+    --red-bg: #FDECEA;
+    --shadow: 0 1px 4px rgba(0,0,0,0.06), 0 0 0 1px rgba(161,113,54,0.08);
+    --shadow-hover: 0 4px 16px rgba(0,0,0,0.1);
+    --radius: 12px;
+    --transition: 200ms ease;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Cairo', sans-serif;
+    background: var(--bg);
+    color: var(--text-dark);
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* ── SIDEBAR ── */
+  .layout { display: flex; min-height: 100vh; }
+
+  .sidebar {
+    width: 240px;
+    background: #FFFFFF;
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; right: 0; bottom: 0;
+    z-index: 100;
+  }
+
+  .logo-area {
+    padding: 24px 20px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* Animated Logo */
+  .logo-svg {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+  }
+
+  .logo-text { line-height: 1.2; }
+  .logo-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: -0.5px;
+  }
+  .logo-sub {
+    font-size: 10px;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  .gcc-flags {
+    display: flex;
+    gap: 3px;
+    padding: 6px 20px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .flag-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    opacity: 0.7;
+  }
+
+  nav { flex: 1; padding: 12px 0; overflow-y: auto; }
+
+  .nav-section {
+    padding: 16px 20px 6px;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 0;
+    transition: background var(--transition), color var(--transition);
+    color: var(--text-mid);
+    font-size: 13.5px;
+    font-weight: 500;
+    position: relative;
+    user-select: none;
+  }
+
+  .nav-item:hover { background: var(--bg); color: var(--text-dark); }
+
+  .nav-item.active {
+    color: var(--gold);
+    background: #FDF6EC;
+    font-weight: 600;
+  }
+  .nav-item.active::before {
+    content: '';
+    position: absolute;
+    right: 0; top: 6px; bottom: 6px;
+    width: 3px;
+    background: var(--gold);
+    border-radius: 2px 0 0 2px;
+  }
+
+  .nav-icon {
+    width: 18px; height: 18px;
+    flex-shrink: 0;
+    opacity: 0.85;
+  }
+
+  .sidebar-footer {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .user-avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--gold-pale);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gold);
+    flex-shrink: 0;
+  }
+  .user-info { line-height: 1.3; }
+  .user-name { font-size: 12.5px; font-weight: 600; color: var(--text-dark); }
+  .user-role { font-size: 11px; color: var(--text-muted); }
+
+  /* ── MAIN ── */
+  .main {
+    margin-right: 240px;
+    flex: 1;
+    min-height: 100vh;
+  }
+
+  .topbar {
+    background: white;
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .topbar-title { font-size: 15px; font-weight: 600; color: var(--text-dark); }
+  .topbar-right { display: flex; align-items: center; gap: 12px; }
+
+  .topbar-btn {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: white;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition);
+    color: var(--text-mid);
+    position: relative;
+  }
+  .topbar-btn:hover { background: var(--bg); border-color: var(--gold-pale); }
+
+  .notif-badge {
+    position: absolute;
+    top: 4px; left: 4px;
+    width: 8px; height: 8px;
+    background: var(--red);
+    border-radius: 50%;
+    border: 2px solid white;
+  }
+
+  .primary-btn {
+    background: var(--gold);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 6px;
+    transition: background var(--transition), box-shadow var(--transition);
+  }
+  .primary-btn:hover { background: var(--gold-light); box-shadow: 0 2px 8px rgba(161,113,54,0.3); }
+
+  /* ── PAGES ── */
+  .page { display: none; padding: 32px; }
+  .page.active { display: block; animation: fadeIn 200ms ease; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ── PAGE HEADER ── */
+  .page-header { margin-bottom: 28px; }
+  .page-header h1 { font-size: 22px; font-weight: 700; color: var(--text-dark); margin-bottom: 4px; }
+  .page-header p { font-size: 13.5px; color: var(--text-muted); }
+
+  .green-word { color: var(--green); font-weight: 600; }
+
+  /* ── PLATFORM INTRO (Home only) ── */
+  .platform-intro {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .intro-text h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 6px;
+  }
+  .intro-text p {
+    font-size: 13.5px;
+    color: var(--text-mid);
+    max-width: 520px;
+    line-height: 1.7;
+  }
+
+  .intro-badges { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+  .intro-badge {
+    padding: 4px 10px;
+    border-radius: 100px;
+    font-size: 11.5px;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    color: var(--text-mid);
+  }
+  .intro-badge.gold { border-color: var(--gold-pale); color: var(--gold); background: #FDF6EC; }
+  .intro-badge.green { border-color: #B6DEC8; color: var(--green); background: var(--green-bg); }
+
+  /* VIDEO */
+  .intro-video {
+    width: 220px;
+    height: 140px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 8px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .video-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(161,113,54,0.15), rgba(46,125,82,0.10));
+  }
+
+  .video-lines {
+    position: absolute; inset: 0;
+    opacity: 0.06;
+    background: repeating-linear-gradient(0deg, transparent, transparent 8px, white 8px, white 9px);
+  }
+
+  .play-btn {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    border: 2px solid rgba(255,255,255,0.4);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; z-index: 1;
+    transition: all 200ms;
+  }
+  .intro-video:hover .play-btn { background: rgba(255,255,255,0.25); transform: scale(1.05); }
+
+  .video-label {
+    font-size: 10.5px;
+    color: rgba(255,255,255,0.7);
+    font-weight: 500;
+    position: relative; z-index: 1;
+    text-align: center;
+  }
+
+  /* Modal */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-overlay.open { display: flex; animation: fadeIn 200ms ease; }
+
+  .modal {
+    background: white;
+    border-radius: 16px;
+    padding: 28px;
+    width: 700px;
+    max-width: 95vw;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    position: relative;
+  }
+
+  .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  .modal-header h3 { font-size: 17px; font-weight: 700; }
+  .modal-close { background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 4px; }
+
+  .video-player {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: #111;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 16px;
+    color: rgba(255,255,255,0.8);
+    font-size: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* animated "video" */
+  .vp-bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #0f0f0f 0%, #1a1508 50%, #0f0f0f 100%);
+  }
+
+  .vp-content { position: relative; z-index: 1; text-align: center; }
+  .vp-logo { font-size: 42px; font-weight: 700; color: var(--gold); margin-bottom: 12px; letter-spacing: -1px; }
+  .vp-tagline { font-size: 14px; color: rgba(255,255,255,0.6); margin-bottom: 20px; }
+  .vp-steps { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+  .vp-step {
+    text-align: center;
+    padding: 12px 16px;
+    border: 1px solid rgba(161,113,54,0.3);
+    border-radius: 8px;
+    min-width: 100px;
+  }
+  .vp-step-num { font-size: 20px; font-weight: 700; color: var(--gold); }
+  .vp-step-label { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 4px; }
+
+  .vp-bar {
+    position: absolute; bottom: 0; left: 0;
+    height: 3px;
+    background: var(--gold);
+    animation: vpBar 8s linear infinite;
+    border-radius: 2px;
+  }
+  @keyframes vpBar { from { width: 0; } to { width: 100%; } }
+
+  /* ── KPI CARDS ── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .kpi-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    transition: box-shadow var(--transition);
+  }
+  .kpi-card:hover { box-shadow: var(--shadow-hover); }
+
+  .kpi-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; }
+  .kpi-icon-wrap {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid;
+  }
+  .kpi-icon-wrap.gold { background: #FDF6EC; border-color: var(--gold-pale); color: var(--gold); }
+  .kpi-icon-wrap.green { background: var(--green-bg); border-color: #B6DEC8; color: var(--green); }
+  .kpi-icon-wrap.amber { background: var(--amber-bg); border-color: #F5DFA0; color: var(--amber); }
+  .kpi-icon-wrap.red { background: var(--red-bg); border-color: #F5C6C2; color: var(--red); }
+
+  .kpi-trend {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 7px;
+    border-radius: 100px;
+  }
+  .kpi-trend.up { background: var(--green-bg); color: var(--green); }
+  .kpi-trend.down { background: var(--red-bg); color: var(--red); }
+
+  .kpi-value { font-size: 28px; font-weight: 700; color: var(--text-dark); margin-bottom: 4px; letter-spacing: -0.5px; }
+  .kpi-label { font-size: 13px; color: var(--text-muted); }
+
+  /* ── CHARTS ROW ── */
+  .charts-row {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .chart-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+  }
+
+  .chart-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .chart-header h3 { font-size: 15px; font-weight: 600; color: var(--text-dark); }
+  .chart-header span { font-size: 12px; color: var(--text-muted); }
+
+  /* SVG Line Chart */
+  .line-chart-wrap { width: 100%; height: 180px; }
+
+  /* SVG Pie */
+  .pie-wrap { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .pie-legend { width: 100%; display: flex; flex-direction: column; gap: 8px; }
+  .pie-legend-item { display: flex; align-items: center; justify-content: space-between; font-size: 12.5px; }
+  .pie-legend-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; margin-left: 8px; }
+  .pie-legend-label { display: flex; align-items: center; color: var(--text-mid); }
+  .pie-legend-val { font-weight: 600; color: var(--text-dark); }
+
+  /* ── TABLE ── */
+  .section-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .section-header h3 { font-size: 15px; font-weight: 600; }
+
+  .filter-row { display: flex; gap: 8px; align-items: center; }
+
+  .filter-select {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 7px 12px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 12.5px;
+    color: var(--text-mid);
+    background: white;
+    cursor: pointer;
+    outline: none;
+    transition: border-color var(--transition);
+    appearance: none;
+  }
+  .filter-select:focus { border-color: var(--gold); }
+
+  .search-box {
+    display: flex; align-items: center;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: white;
+    padding: 7px 12px;
+    gap: 8px;
+    transition: border-color var(--transition);
+  }
+  .search-box:focus-within { border-color: var(--gold); }
+  .search-box input {
+    border: none; outline: none;
+    font-family: 'Cairo', sans-serif;
+    font-size: 12.5px;
+    color: var(--text-dark);
+    background: transparent;
+    width: 160px;
+  }
+  .search-box input::placeholder { color: var(--text-muted); }
+
+  .table-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  table { width: 100%; border-collapse: collapse; }
+  thead th {
+    padding: 12px 16px;
+    text-align: right;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    letter-spacing: 0.3px;
+  }
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background var(--transition);
+    cursor: pointer;
+  }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: #FDFAF5; }
+  tbody td { padding: 14px 16px; font-size: 13px; color: var(--text-dark); }
+
+  .cell-id { font-family: monospace; font-size: 12px; color: var(--text-muted); }
+  .cell-company { font-weight: 500; }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+  .badge-dot { width: 5px; height: 5px; border-radius: 50%; }
+
+  .badge.approved { background: var(--green-bg); color: var(--green); }
+  .badge.approved .badge-dot { background: var(--green); }
+  .badge.pending { background: var(--amber-bg); color: var(--amber); }
+  .badge.pending .badge-dot { background: var(--amber); }
+  .badge.rejected { background: var(--red-bg); color: var(--red); }
+  .badge.rejected .badge-dot { background: var(--red); }
+
+  /* ── CREATE INVOICE ── */
+  .form-steps {
+    display: flex;
+    gap: 0;
+    margin-bottom: 32px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: white;
+  }
+
+  .form-step {
+    flex: 1;
+    padding: 14px 16px;
+    text-align: center;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: white;
+    border-left: 1px solid var(--border);
+    cursor: pointer;
+    transition: all var(--transition);
+    position: relative;
+  }
+  .form-step:last-child { border-left: none; }
+  .form-step.active { color: var(--gold); background: #FDF6EC; font-weight: 600; }
+  .form-step.done { color: var(--green); }
+
+  .form-step-num {
+    display: block;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 2px;
+  }
+  .form-step.active .form-step-num { color: var(--gold-pale); }
+  .form-step.done .form-step-num { color: #B6DEC8; }
+
+  .form-section {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+
+  .form-section-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-grid.three { grid-template-columns: 1fr 1fr 1fr; }
+
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group.full { grid-column: 1 / -1; }
+
+  label { font-size: 12.5px; font-weight: 500; color: var(--text-mid); }
+
+  input[type="text"], input[type="number"], input[type="date"], select, textarea {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 13px;
+    color: var(--text-dark);
+    background: var(--bg);
+    outline: none;
+    transition: border-color var(--transition), background var(--transition);
+    width: 100%;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--gold);
+    background: white;
+  }
+
+  .products-table-wrap { overflow-x: auto; }
+  .products-table { width: 100%; border-collapse: collapse; }
+  .products-table th {
+    padding: 10px 12px;
+    text-align: right;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+  .products-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+  .products-table td input { background: white; }
+
+  .add-row-btn {
+    background: none;
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+    padding: 10px;
+    width: 100%;
+    font-family: 'Cairo', sans-serif;
+    font-size: 12.5px;
+    color: var(--text-muted);
+    cursor: pointer;
+    margin-top: 8px;
+    transition: all var(--transition);
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .add-row-btn:hover { border-color: var(--gold); color: var(--gold); background: #FDF6EC; }
+
+  .tax-summary {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .tax-row { display: flex; justify-content: space-between; align-items: center; }
+  .tax-row span:first-child { font-size: 13px; color: var(--text-muted); }
+  .tax-row span:last-child { font-size: 13px; font-weight: 600; color: var(--text-dark); }
+  .tax-row.total span { font-size: 15px; font-weight: 700; color: var(--gold); }
+  .tax-row.total { grid-column: 1 / -1; border-top: 1px solid var(--border); padding-top: 12px; margin-top: 4px; }
+
+  .form-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px; }
+
+  .outline-btn {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 9px 18px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--text-mid);
+    transition: all var(--transition);
+  }
+  .outline-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ── INVOICE DETAIL ── */
+  .detail-grid { display: grid; grid-template-columns: 340px 1fr; gap: 20px; }
+
+  .detail-right { display: flex; flex-direction: column; gap: 16px; }
+
+  .qr-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    text-align: center;
+  }
+
+  .qr-box {
+    width: 120px; height: 120px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin: 0 auto 14px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+
+  /* QR pattern */
+  .qr-pattern {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    padding: 10px;
+  }
+  .qr-cell {
+    width: 8px; height: 8px;
+    border-radius: 1px;
+  }
+  .qr-cell.dark { background: #1A1A1A; }
+  .qr-cell.light { background: transparent; }
+
+  .qr-label { font-size: 11.5px; color: var(--text-muted); }
+
+  .sig-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+
+  .sig-title { font-size: 13px; font-weight: 600; margin-bottom: 12px; color: var(--text-dark); }
+  .sig-value {
+    font-family: monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    word-break: break-all;
+    background: var(--bg);
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    line-height: 1.6;
+  }
+
+  .uuid-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  }
+  .uuid-label { font-size: 11.5px; color: var(--text-muted); margin-bottom: 2px; }
+  .uuid-val { font-family: monospace; font-size: 11.5px; color: var(--text-dark); font-weight: 600; }
+
+  /* Invoice data left */
+  .inv-data-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+  }
+
+  .inv-header-row { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 20px; }
+  .inv-number { font-size: 20px; font-weight: 700; color: var(--text-dark); }
+  .inv-date { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+  .inv-parties { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .inv-party-label { font-size: 11px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.5px; margin-bottom: 6px; }
+  .inv-party-name { font-size: 14px; font-weight: 600; color: var(--text-dark); }
+  .inv-party-vat { font-size: 12px; color: var(--text-muted); }
+
+  .inv-items { border-top: 1px solid var(--border); padding-top: 16px; margin-bottom: 16px; }
+
+  .inv-total-row {
+    background: var(--bg);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .inv-total-label { font-size: 13px; color: var(--text-mid); }
+  .inv-total-val { font-size: 18px; font-weight: 700; color: var(--gold); }
+
+  /* Timeline */
+  .timeline-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-top: 16px;
+  }
+
+  .timeline { display: flex; align-items: center; gap: 0; }
+  .tl-step { display: flex; flex-direction: column; align-items: center; flex: 1; position: relative; }
+  .tl-dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: 2px solid;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 1;
+    background: white;
+    margin-bottom: 8px;
+  }
+  .tl-dot.done { border-color: var(--green); color: var(--green); background: var(--green-bg); }
+  .tl-dot.current { border-color: var(--gold); color: var(--gold); background: #FDF6EC; }
+  .tl-dot.pending-tl { border-color: var(--border); color: var(--text-muted); }
+
+  .tl-line {
+    position: absolute;
+    top: 13px;
+    left: 0;
+    right: 50%;
+    height: 2px;
+    background: var(--border);
+  }
+  .tl-line.done { background: var(--green); }
+  .tl-step:first-child .tl-line { display: none; }
+
+  .tl-label { font-size: 11px; color: var(--text-muted); text-align: center; line-height: 1.4; }
+  .tl-label.done { color: var(--green); font-weight: 500; }
+  .tl-label.current { color: var(--gold); font-weight: 600; }
+
+  /* ── VERIFICATION CENTER ── */
+  .verif-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+  .verif-stat {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    text-align: center;
+  }
+  .verif-stat-val { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+  .verif-stat-label { font-size: 12px; color: var(--text-muted); }
+
+  /* ── REPORTS ── */
+  .reports-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+
+  .report-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    display: flex; align-items: center; gap: 18px;
+    cursor: pointer;
+    transition: all var(--transition);
+  }
+  .report-card:hover { box-shadow: var(--shadow-hover); border-color: var(--gold-pale); }
+
+  .report-icon-wrap {
+    width: 52px; height: 52px;
+    border-radius: 12px;
+    background: #FDF6EC;
+    border: 1px solid var(--gold-pale);
+    color: var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .report-info { flex: 1; }
+  .report-name { font-size: 15px; font-weight: 600; color: var(--text-dark); margin-bottom: 4px; }
+  .report-desc { font-size: 12.5px; color: var(--text-muted); }
+  .report-size { font-size: 11.5px; color: var(--text-muted); margin-top: 6px; }
+
+  .download-btn {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: white;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: all var(--transition);
+    flex-shrink: 0;
+  }
+  .download-btn:hover { border-color: var(--gold); color: var(--gold); background: #FDF6EC; }
+
+  /* ── NOTIFICATIONS ── */
+  .notif-list { display: flex; flex-direction: column; gap: 10px; }
+
+  .notif-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    display: flex; align-items: flex-start; gap: 14px;
+    transition: all var(--transition);
+  }
+  .notif-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .notif-card.unread { border-right: 3px solid var(--gold); }
+
+  .notif-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    border: 1px solid;
+  }
+
+  .notif-body { flex: 1; }
+  .notif-title { font-size: 13.5px; font-weight: 600; color: var(--text-dark); margin-bottom: 3px; }
+  .notif-sub { font-size: 12.5px; color: var(--text-muted); }
+  .notif-time { font-size: 11px; color: var(--text-muted); margin-top: 6px; }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* Animated logo ring */
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+
+  .logo-ring { animation: spin 8s linear infinite; transform-origin: 20px 20px; }
+  .logo-center { animation: pulse 2s ease-in-out infinite; }
+
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo-area">
+      <!-- Animated SVG Logo -->
+      <svg class="logo-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Outer ring (GCC 6 dots) -->
+        <circle class="logo-ring" cx="20" cy="20" r="17" stroke="#A17136" stroke-width="1" stroke-dasharray="4 6" stroke-linecap="round" opacity="0.5"/>
+        <!-- Inner circle -->
+        <circle cx="20" cy="20" r="12" fill="#FDF6EC" stroke="#A17136" stroke-width="1.2"/>
+        <!-- "ف" stylized -->
+        <path class="logo-center" d="M14 22 Q14 16 20 16 Q26 16 26 20 Q26 22 24 22 L16 22 L16 26" stroke="#A17136" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <circle class="logo-center" cx="14" cy="24" r="1.5" fill="#2E7D52"/>
+      </svg>
+      <div class="logo-text">
+        <div class="logo-name">فوترَة</div>
+        <div class="logo-sub">دول مجلس التعاون الخليجي</div>
+      </div>
+    </div>
+
+    <!-- GCC Country Dots -->
+    <div class="gcc-flags" title="دول مجلس التعاون الخليجي">
+      <div class="flag-dot" style="background:#006C35" title="السعودية"></div>
+      <div class="flag-dot" style="background:#CF0000" title="الإمارات"></div>
+      <div class="flag-dot" style="background:#CC0000" title="الكويت"></div>
+      <div class="flag-dot" style="background:#DB0000" title="قطر"></div>
+      <div class="flag-dot" style="background:#D21034" title="البحرين"></div>
+      <div class="flag-dot" style="background:#DB161B" title="عُمان"></div>
+    </div>
+
+    <nav>
+      <div class="nav-section">الرئيسية</div>
+      <div class="nav-item active" onclick="showPage('home')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+        </svg>
+        لوحة التحكم
+      </div>
+
+      <div class="nav-section">الفواتير</div>
+      <div class="nav-item" onclick="showPage('create')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="12" x2="12" y2="18"/><line x1="9" y1="15" x2="15" y2="15"/>
+        </svg>
+        إنشاء فاتورة
+      </div>
+      <div class="nav-item" onclick="showPage('detail')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+        </svg>
+        تفاصيل فاتورة
+      </div>
+
+      <div class="nav-section">الرقابة والتقارير</div>
+      <div class="nav-item" onclick="showPage('verification')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <polyline points="9 12 11 14 15 10"/>
+        </svg>
+        مركز التحقق
+      </div>
+      <div class="nav-item" onclick="showPage('reports')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+        </svg>
+        التقارير
+      </div>
+
+      <div class="nav-section">النظام</div>
+      <div class="nav-item" onclick="showPage('notifications')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+        الإشعارات
+        <span style="margin-right:auto;background:var(--red);color:white;font-size:10px;font-weight:700;padding:2px 6px;border-radius:100px;">3</span>
+      </div>
+      <div class="nav-item">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+        الإعدادات
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-avatar">م</div>
+      <div class="user-info">
+        <div class="user-name">محمد العتيبي</div>
+        <div class="user-role">مسؤول الفواتير</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div class="topbar-title" id="topbar-title">لوحة التحكم</div>
+      <div class="topbar-right">
+        <div class="topbar-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+        </div>
+        <div class="topbar-btn" onclick="showPage('notifications')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+          </svg>
+          <span class="notif-badge"></span>
+        </div>
+        <button class="primary-btn" onclick="showPage('create')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          إنشاء فاتورة
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══════════════ HOME PAGE ═══════════════ -->
+    <div class="page active" id="page-home">
+      <!-- Platform Intro -->
+      <div class="platform-intro">
+        <div class="intro-text">
+          <h2>منصة الفوترة الإلكترونية الذكية</h2>
+          <p>
+            <span class="green-word">تمكين</span> الامتثال الضريبي من خلال إصدار وتتبع الفواتير الإلكترونية والتحقق منها رقمياً وفق معايير هيئة الزكاة والضريبة والجمارك.
+          </p>
+          <div class="intro-badges">
+            <span class="intro-badge gold">ZATCA متوافق</span>
+            <span class="intro-badge green">المرحلة الثانية</span>
+            <span class="intro-badge">دول مجلس التعاون</span>
+            <span class="intro-badge">VAT 15%</span>
+          </div>
+        </div>
+        <div class="intro-video" onclick="openVideo()">
+          <div class="video-overlay"></div>
+          <div class="video-lines"></div>
+          <div class="play-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="white" stroke="none">
+              <polygon points="5 3 19 12 5 21 5 3"/>
+            </svg>
+          </div>
+          <div class="video-label">فيديو تعريفي<br>عن المنصة</div>
+        </div>
+      </div>
+
+      <!-- KPI Cards -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <div class="kpi-icon-wrap gold">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+              </svg>
+            </div>
+            <span class="kpi-trend up">↑ 12%</span>
+          </div>
+          <div class="kpi-value">4,821</div>
+          <div class="kpi-label">الفواتير الصادرة</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <div class="kpi-icon-wrap green">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+            </div>
+            <span class="kpi-trend up">↑ 8%</span>
+          </div>
+          <div class="kpi-value">4,109</div>
+          <div class="kpi-label">الفواتير المعتمدة</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <div class="kpi-icon-wrap amber">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+              </svg>
+            </div>
+            <span class="kpi-trend down">↓ 3%</span>
+          </div>
+          <div class="kpi-value">563</div>
+          <div class="kpi-label">قيد المراجعة</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <div class="kpi-icon-wrap red">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
+              </svg>
+            </div>
+            <span class="kpi-trend down">↓ 5%</span>
+          </div>
+          <div class="kpi-value">149</div>
+          <div class="kpi-label">الفواتير المرفوضة</div>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div class="charts-row">
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Monthly Invoice Activity</h3>
+            <span>يناير – يونيو 2025</span>
+          </div>
+          <div class="line-chart-wrap">
+            <svg width="100%" height="180" viewBox="0 0 560 180" preserveAspectRatio="none">
+              <!-- Grid lines -->
+              <line x1="0" y1="36" x2="560" y2="36" stroke="#E0D8CC" stroke-width="1"/>
+              <line x1="0" y1="72" x2="560" y2="72" stroke="#E0D8CC" stroke-width="1"/>
+              <line x1="0" y1="108" x2="560" y2="108" stroke="#E0D8CC" stroke-width="1"/>
+              <line x1="0" y1="144" x2="560" y2="144" stroke="#E0D8CC" stroke-width="1"/>
+              <!-- Y labels -->
+              <text x="555" y="39" text-anchor="end" font-size="10" fill="#8A8A8A" font-family="Cairo">1200</text>
+              <text x="555" y="75" text-anchor="end" font-size="10" fill="#8A8A8A" font-family="Cairo">900</text>
+              <text x="555" y="111" text-anchor="end" font-size="10" fill="#8A8A8A" font-family="Cairo">600</text>
+              <text x="555" y="147" text-anchor="end" font-size="10" fill="#8A8A8A" font-family="Cairo">300</text>
+              <!-- Approved fill -->
+              <defs>
+                <linearGradient id="goldFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#A17136" stop-opacity="0.15"/>
+                  <stop offset="100%" stop-color="#A17136" stop-opacity="0.02"/>
+                </linearGradient>
+                <linearGradient id="greenFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#2E7D52" stop-opacity="0.12"/>
+                  <stop offset="100%" stop-color="#2E7D52" stop-opacity="0.02"/>
+                </linearGradient>
+              </defs>
+              <!-- Gold area (issued) -->
+              <path d="M40,100 C120,80 160,60 200,55 C240,50 280,70 320,65 C360,60 400,40 440,35 C480,30 520,45 560,40 L560,160 L40,160 Z"
+                    fill="url(#goldFill)"/>
+              <!-- Gold line (issued) -->
+              <path d="M40,100 C120,80 160,60 200,55 C240,50 280,70 320,65 C360,60 400,40 440,35 C480,30 520,45 560,40"
+                    stroke="#A17136" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <!-- Green area (approved) -->
+              <path d="M40,115 C120,95 160,78 200,72 C240,68 280,88 320,82 C360,76 400,58 440,52 C480,48 520,62 560,57 L560,160 L40,160 Z"
+                    fill="url(#greenFill)"/>
+              <!-- Green line (approved) -->
+              <path d="M40,115 C120,95 160,78 200,72 C240,68 280,88 320,82 C360,76 400,58 440,52 C480,48 520,62 560,57"
+                    stroke="#2E7D52" stroke-width="2" fill="none" stroke-linecap="round" stroke-dasharray="5 3"/>
+              <!-- X labels -->
+              <text x="40" y="175" text-anchor="middle" font-size="10" fill="#8A8A8A" font-family="Cairo">يناير</text>
+              <text x="152" y="175" text-anchor="middle" font-size="10" fill="#8A8A8A" font-family="Cairo">فبراير</text>
+              <text x="264" y="175" text-anchor="middle" font-size="10" fill="#8A8A8A" font-family="Cairo">مارس</text>
+              <text x="376" y="175" text-anchor="middle" font-size="10" fill="#8A8A8A" font-family="Cairo">أبريل</text>
+              <text x="488" y="175" text-anchor="middle" font-size="10" fill="#8A8A8A" font-family="Cairo">مايو</text>
+              <!-- Legend -->
+              <rect x="20" y="12" width="10" height="2" rx="1" fill="#A17136"/>
+              <text x="34" y="18" font-size="10" fill="#4A4A4A" font-family="Cairo">الفواتير الصادرة</text>
+              <rect x="120" y="12" width="10" height="2" rx="1" fill="#2E7D52"/>
+              <text x="134" y="18" font-size="10" fill="#4A4A4A" font-family="Cairo">الفواتير المعتمدة</text>
+            </svg>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Distribution by Sector</h3>
+          </div>
+          <div class="pie-wrap">
+            <svg width="140" height="140" viewBox="0 0 140 140">
+              <!-- Pie chart segments -->
+              <circle cx="70" cy="70" r="50" fill="none" stroke="#A17136" stroke-width="28"
+                stroke-dasharray="188 126" stroke-dashoffset="0" transform="rotate(-90 70 70)"/>
+              <circle cx="70" cy="70" r="50" fill="none" stroke="#2E7D52" stroke-width="28"
+                stroke-dasharray="82 232" stroke-dashoffset="-188" transform="rotate(-90 70 70)"/>
+              <circle cx="70" cy="70" r="50" fill="none" stroke="#B07A00" stroke-width="28"
+                stroke-dasharray="44 270" stroke-dashoffset="-270" transform="rotate(-90 70 70)"/>
+              <circle cx="70" cy="70" r="50" fill="none" stroke="#C0392B" stroke-width="28"
+                stroke-dasharray="0 314" stroke-dashoffset="-314" transform="rotate(-90 70 70)"/>
+              <circle cx="70" cy="70" r="36" fill="white"/>
+              <text x="70" y="66" text-anchor="middle" font-size="14" font-weight="700" fill="#1A1A1A" font-family="Cairo">4,821</text>
+              <text x="70" y="80" text-anchor="middle" font-size="9" fill="#8A8A8A" font-family="Cairo">إجمالي</text>
+            </svg>
+            <div class="pie-legend">
+              <div class="pie-legend-item">
+                <div class="pie-legend-label"><div class="pie-legend-dot" style="background:#A17136"></div>قطاع التجزئة</div>
+                <div class="pie-legend-val">60%</div>
+              </div>
+              <div class="pie-legend-item">
+                <div class="pie-legend-label"><div class="pie-legend-dot" style="background:#2E7D52"></div>قطاع الخدمات</div>
+                <div class="pie-legend-val">26%</div>
+              </div>
+              <div class="pie-legend-item">
+                <div class="pie-legend-label"><div class="pie-legend-dot" style="background:#B07A00"></div>قطاع المقاولات</div>
+                <div class="pie-legend-val">14%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Invoices Table -->
+      <div class="section-header">
+        <h3>جدول الفواتير</h3>
+        <div class="filter-row">
+          <div class="search-box">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8A8A8A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input type="text" placeholder="بحث عن فاتورة...">
+          </div>
+          <select class="filter-select">
+            <option>جميع الحالات</option>
+            <option>معتمد</option>
+            <option>قيد التحقق</option>
+            <option>مرفوض</option>
+          </select>
+          <select class="filter-select">
+            <option>هذا الشهر</option>
+            <option>آخر 3 أشهر</option>
+            <option>هذا العام</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>رقم الفاتورة</th>
+              <th>المورد</th>
+              <th>المشتري</th>
+              <th>قيمة الضريبة</th>
+              <th>تاريخ الإصدار</th>
+              <th>الحالة</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr onclick="showPage('detail')">
+              <td class="cell-id">INV-2025-00841</td>
+              <td class="cell-company">شركة الأفق للتوريدات</td>
+              <td class="cell-company">مجموعة البيان التجارية</td>
+              <td>٨٬٧٥٠ ر.س</td>
+              <td>١٥ يناير ٢٠٢٥</td>
+              <td><span class="badge approved"><span class="badge-dot"></span>معتمد</span></td>
+            </tr>
+            <tr onclick="showPage('detail')">
+              <td class="cell-id">INV-2025-00840</td>
+              <td class="cell-company">مؤسسة النخبة للخدمات</td>
+              <td class="cell-company">شركة الوطنية للتقنية</td>
+              <td>٣٬٢٢٠ ر.س</td>
+              <td>١٤ يناير ٢٠٢٥</td>
+              <td><span class="badge pending"><span class="badge-dot"></span>قيد التحقق</span></td>
+            </tr>
+            <tr onclick="showPage('detail')">
+              <td class="cell-id">INV-2025-00839</td>
+              <td class="cell-company">شركة الرياض للمقاولات</td>
+              <td class="cell-company">هيئة المدن الاقتصادية</td>
+              <td>٢٢٬١٠٠ ر.س</td>
+              <td>١٤ يناير ٢٠٢٥</td>
+              <td><span class="badge approved"><span class="badge-dot"></span>معتمد</span></td>
+            </tr>
+            <tr onclick="showPage('detail')">
+              <td class="cell-id">INV-2025-00838</td>
+              <td class="cell-company">مؤسسة الفيصل التجارية</td>
+              <td class="cell-company">بنك الرياض</td>
+              <td>١٬٨٥٠ ر.س</td>
+              <td>١٣ يناير ٢٠٢٥</td>
+              <td><span class="badge rejected"><span class="badge-dot"></span>مرفوض</span></td>
+            </tr>
+            <tr onclick="showPage('detail')">
+              <td class="cell-id">INV-2025-00837</td>
+              <td class="cell-company">شركة الخليج للاستشارات</td>
+              <td class="cell-company">أرامكو السعودية</td>
+              <td>٤٥٬٠٠٠ ر.س</td>
+              <td>١٢ يناير ٢٠٢٥</td>
+              <td><span class="badge approved"><span class="badge-dot"></span>معتمد</span></td>
+            </tr>
+            <tr onclick="showPage('detail')">
+              <td class="cell-id">INV-2025-00836</td>
+              <td class="cell-company">مجموعة التميم للتوريد</td>
+              <td class="cell-company">شركة SABIC</td>
+              <td>١٢٬٤٠٠ ر.س</td>
+              <td>١٢ يناير ٢٠٢٥</td>
+              <td><span class="badge pending"><span class="badge-dot"></span>قيد التحقق</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ═══════════════ CREATE INVOICE ═══════════════ -->
+    <div class="page" id="page-create">
+      <div class="page-header">
+        <h1>إنشاء فاتورة إلكترونية</h1>
+        <p>أدخل بيانات الفاتورة وفق متطلبات الفوترة الإلكترونية للمرحلة الثانية</p>
+      </div>
+
+      <!-- Steps -->
+      <div class="form-steps">
+        <div class="form-step active">
+          <span class="form-step-num">01</span>
+          معلومات المورد
+        </div>
+        <div class="form-step">
+          <span class="form-step-num">02</span>
+          معلومات المشتري
+        </div>
+        <div class="form-step">
+          <span class="form-step-num">03</span>
+          تفاصيل المنتجات
+        </div>
+        <div class="form-step">
+          <span class="form-step-num">04</span>
+          الضريبة
+        </div>
+        <div class="form-step">
+          <span class="form-step-num">05</span>
+          معاينة وإصدار
+        </div>
+      </div>
+
+      <!-- Supplier -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          معلومات المورد
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>اسم المورد</label>
+            <input type="text" placeholder="شركة الأفق للتوريدات">
+          </div>
+          <div class="form-group">
+            <label>الرقم الضريبي (VAT)</label>
+            <input type="text" placeholder="300XXXXXXXXXX003">
+          </div>
+          <div class="form-group">
+            <label>رقم السجل التجاري</label>
+            <input type="text" placeholder="1010XXXXXX">
+          </div>
+          <div class="form-group">
+            <label>الدولة</label>
+            <select>
+              <option>المملكة العربية السعودية</option>
+              <option>الإمارات العربية المتحدة</option>
+              <option>الكويت</option>
+              <option>قطر</option>
+              <option>البحرين</option>
+              <option>عُمان</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label>العنوان</label>
+            <input type="text" placeholder="المدينة، الحي، الشارع، رقم المبنى">
+          </div>
+        </div>
+      </div>
+
+      <!-- Buyer -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+          </svg>
+          معلومات المشتري
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>اسم المشتري</label>
+            <input type="text" placeholder="مجموعة البيان التجارية">
+          </div>
+          <div class="form-group">
+            <label>الرقم الضريبي</label>
+            <input type="text" placeholder="300XXXXXXXXXX003">
+          </div>
+          <div class="form-group">
+            <label>البريد الإلكتروني</label>
+            <input type="text" placeholder="billing@company.com">
+          </div>
+          <div class="form-group">
+            <label>رقم الهاتف</label>
+            <input type="text" placeholder="+966 5X XXX XXXX">
+          </div>
+        </div>
+      </div>
+
+      <!-- Products -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+          </svg>
+          تفاصيل المنتجات والخدمات
+        </div>
+        <div class="products-table-wrap">
+          <table class="products-table">
+            <thead>
+              <tr>
+                <th style="width:40%">الوصف</th>
+                <th>الكمية</th>
+                <th>سعر الوحدة</th>
+                <th>الخصم %</th>
+                <th>الإجمالي</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="text" placeholder="اسم المنتج أو الخدمة"></td>
+                <td><input type="number" placeholder="1" style="width:70px"></td>
+                <td><input type="number" placeholder="0.00" style="width:100px"></td>
+                <td><input type="number" placeholder="0" style="width:70px"></td>
+                <td><input type="text" placeholder="0.00" readonly style="background:#F4EFE6;width:100px"></td>
+              </tr>
+              <tr>
+                <td><input type="text" placeholder="اسم المنتج أو الخدمة"></td>
+                <td><input type="number" placeholder="1" style="width:70px"></td>
+                <td><input type="number" placeholder="0.00" style="width:100px"></td>
+                <td><input type="number" placeholder="0" style="width:70px"></td>
+                <td><input type="text" placeholder="0.00" readonly style="background:#F4EFE6;width:100px"></td>
+              </tr>
+            </tbody>
+          </table>
+          <button class="add-row-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            إضافة بند جديد
+          </button>
+        </div>
+      </div>
+
+      <!-- Tax -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+          ملخص الضريبة والمبالغ
+        </div>
+        <div class="tax-summary">
+          <div class="tax-row"><span>المجموع قبل الضريبة</span><span>٨٥٬٠٠٠ ر.س</span></div>
+          <div class="tax-row"><span>الخصم الإجمالي</span><span>٠ ر.س</span></div>
+          <div class="tax-row"><span>ضريبة القيمة المضافة (15%)</span><span>١٢٬٧٥٠ ر.س</span></div>
+          <div class="tax-row"><span>نوع الفاتورة</span><span>فاتورة ضريبية</span></div>
+          <div class="tax-row total"><span>الإجمالي شامل الضريبة</span><span>٩٧٬٧٥٠ ر.س</span></div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button class="outline-btn">معاينة الفاتورة</button>
+        <button class="primary-btn" onclick="showPage('detail')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          إصدار الفاتورة
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══════════════ INVOICE DETAIL ═══════════════ -->
+    <div class="page" id="page-detail">
+      <div class="page-header">
+        <h1>تفاصيل الفاتورة</h1>
+        <p>INV-2025-00841 · <span class="badge approved" style="font-size:12px"><span class="badge-dot"></span>معتمد</span></p>
+      </div>
+
+      <div class="detail-grid">
+        <!-- Right: QR, Signature, UUID -->
+        <div class="detail-right">
+          <div class="qr-card">
+            <div style="font-size:13px;font-weight:600;margin-bottom:14px;color:var(--text-dark)">رمز QR للتحقق</div>
+            <div class="qr-box">
+              <!-- Simple QR-like pattern -->
+              <svg width="90" height="90" viewBox="0 0 90 90">
+                <rect x="5" y="5" width="25" height="25" rx="2" fill="none" stroke="#1A1A1A" stroke-width="3"/>
+                <rect x="12" y="12" width="11" height="11" rx="1" fill="#1A1A1A"/>
+                <rect x="60" y="5" width="25" height="25" rx="2" fill="none" stroke="#1A1A1A" stroke-width="3"/>
+                <rect x="67" y="12" width="11" height="11" rx="1" fill="#1A1A1A"/>
+                <rect x="5" y="60" width="25" height="25" rx="2" fill="none" stroke="#1A1A1A" stroke-width="3"/>
+                <rect x="12" y="67" width="11" height="11" rx="1" fill="#1A1A1A"/>
+                <rect x="38" y="5" width="5" height="5" rx="1" fill="#1A1A1A"/>
+                <rect x="46" y="5" width="5" height="5" rx="1" fill="#1A1A1A"/>
+                <rect x="38" y="13" width="5" height="5" rx="1" fill="#1A1A1A"/>
+                <rect x="46" y="21" width="5" height="5" rx="1" fill="#1A1A1A"/>
+                <rect x="38" y="38" width="5" height="5" rx="1" fill="#A17136"/>
+                <rect x="46" y="38" width="5" height="5" rx="1" fill="#1A1A1A"/>
+                <rect x="54" y="38" width="5" height="5" rx="1" fill="#A17136"/>
+                <rect x="38" y="46" width="5" height="5" rx="1" fill="#1A1A1A"/>
+                <rect x="54" y="46" width="5" height="5" rx="1" fill="#1A1A1A"/>
+                <rect x="38" y="54" width="5" height="5" rx="1" fill="#2E7D52"/>
+                <rect x="46" y="54" width="5" height="5" rx="1" fill="#1A1A1A"/>
+                <rect x="60" y="38" width="5" height="5" rx="1" fill="#1A1A1A"/>
+                <rect x="68" y="38" width="5" height="5" rx="1" fill="#1A1A1A"/>
+                <rect x="76" y="38" width="5" height="5" rx="1" fill="#A17136"/>
+                <rect x="60" y="46" width="5" height="5" rx="1" fill="#1A1A1A"/>
+                <rect x="76" y="54" width="5" height="5" rx="1" fill="#1A1A1A"/>
+                <rect x="38" y="68" width="5" height="5" rx="1" fill="#1A1A1A"/>
+                <rect x="54" y="68" width="5" height="5" rx="1" fill="#2E7D52"/>
+                <rect x="62" y="60" width="5" height="5" rx="1" fill="#1A1A1A"/>
+                <rect x="70" y="68" width="5" height="5" rx="1" fill="#1A1A1A"/>
+                <rect x="78" y="60" width="5" height="5" rx="1" fill="#A17136"/>
+              </svg>
+            </div>
+            <div class="qr-label">امسح لتحقق من صحة الفاتورة</div>
+          </div>
+
+          <div class="sig-card">
+            <div class="sig-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline;margin-left:6px">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+              التوقيع الرقمي
+            </div>
+            <div class="sig-value">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMII<br>BIjANBgkqhkiG9w0BAQEFAAOCAQ8AIM<br>IIBCgKCAQEA2tbvNm8RF7V4Y34TT...</div>
+          </div>
+
+          <div class="uuid-card">
+            <div>
+              <div class="uuid-label">رقم UUID الفاتورة</div>
+              <div class="uuid-val">8f3a-7b2c-4e91-a5d6</div>
+            </div>
+            <button class="topbar-btn" title="نسخ">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Left: Invoice Data -->
+        <div>
+          <div class="inv-data-card">
+            <div class="inv-header-row">
+              <div>
+                <div class="inv-number">فاتورة ضريبية</div>
+                <div class="inv-date">INV-2025-00841 · ١٥ يناير ٢٠٢٥</div>
+              </div>
+              <span class="badge approved" style="font-size:13px"><span class="badge-dot"></span>معتمد</span>
+            </div>
+
+            <div class="inv-parties">
+              <div>
+                <div class="inv-party-label">المورد</div>
+                <div class="inv-party-name">شركة الأفق للتوريدات</div>
+                <div class="inv-party-vat">الرقم الضريبي: 300182917900003</div>
+              </div>
+              <div>
+                <div class="inv-party-label">المشتري</div>
+                <div class="inv-party-name">مجموعة البيان التجارية</div>
+                <div class="inv-party-vat">الرقم الضريبي: 300182028900003</div>
+              </div>
+            </div>
+
+            <div class="inv-items">
+              <table style="width:100%;border-collapse:collapse;">
+                <thead>
+                  <tr>
+                    <th style="text-align:right;padding:8px 0;font-size:11.5px;color:var(--text-muted);font-weight:600;border-bottom:1px solid var(--border)">البند</th>
+                    <th style="text-align:center;padding:8px 0;font-size:11.5px;color:var(--text-muted);font-weight:600;border-bottom:1px solid var(--border)">الكمية</th>
+                    <th style="text-align:left;padding:8px 0;font-size:11.5px;color:var(--text-muted);font-weight:600;border-bottom:1px solid var(--border)">الإجمالي</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 0;font-size:13px;border-bottom:1px solid var(--border)">توريد معدات تقنية</td>
+                    <td style="text-align:center;padding:10px 0;font-size:13px;border-bottom:1px solid var(--border)">5</td>
+                    <td style="text-align:left;padding:10px 0;font-size:13px;font-weight:500;border-bottom:1px solid var(--border)">٦٠٬٠٠٠ ر.س</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 0;font-size:13px;border-bottom:1px solid var(--border)">خدمات التركيب والصيانة</td>
+                    <td style="text-align:center;padding:10px 0;font-size:13px;border-bottom:1px solid var(--border)">1</td>
+                    <td style="text-align:left;padding:10px 0;font-size:13px;font-weight:500;border-bottom:1px solid var(--border)">٢٥٬٠٠٠ ر.س</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 0;font-size:13px">ضريبة القيمة المضافة 15%</td>
+                    <td></td>
+                    <td style="text-align:left;padding:10px 0;font-size:13px;font-weight:500;color:var(--text-mid)">٨٬٧٥٠ ر.س</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="inv-total-row">
+              <span class="inv-total-label">الإجمالي شامل الضريبة</span>
+              <span class="inv-total-val">٩٣٬٧٥٠ ر.س</span>
+            </div>
+
+            <div style="display:flex;gap:8px;margin-top:16px;justify-content:flex-start">
+              <button class="outline-btn" style="display:flex;align-items:center;gap:6px">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                تحميل PDF
+              </button>
+              <button class="outline-btn" style="display:flex;align-items:center;gap:6px">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                </svg>
+                تتبع الحالة
+              </button>
+            </div>
+          </div>
+
+          <!-- Timeline -->
+          <div class="timeline-card">
+            <div style="font-size:14px;font-weight:600;margin-bottom:20px;color:var(--text-dark)">مسار الفاتورة</div>
+            <div class="timeline">
+              <div class="tl-step">
+                <div class="tl-dot done">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <div class="tl-label done">تم الإنشاء<br><small style="font-weight:400;font-size:10px">١٥ يناير</small></div>
+              </div>
+              <div class="tl-step">
+                <div class="tl-line done"></div>
+                <div class="tl-dot done">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <div class="tl-label done">تم التوقيع<br><small style="font-weight:400;font-size:10px">١٥ يناير</small></div>
+              </div>
+              <div class="tl-step">
+                <div class="tl-line done"></div>
+                <div class="tl-dot done">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <div class="tl-label done">تم الإرسال<br><small style="font-weight:400;font-size:10px">١٥ يناير</small></div>
+              </div>
+              <div class="tl-step">
+                <div class="tl-line done"></div>
+                <div class="tl-dot done">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <div class="tl-label done">تم التحقق<br><small style="font-weight:400;font-size:10px">١٦ يناير</small></div>
+              </div>
+              <div class="tl-step">
+                <div class="tl-line done"></div>
+                <div class="tl-dot current">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <div class="tl-label current">تم الاعتماد<br><small style="font-weight:400;font-size:10px">١٦ يناير</small></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ VERIFICATION CENTER ═══════════════ -->
+    <div class="page" id="page-verification">
+      <div class="page-header">
+        <h1>مركز التحقق</h1>
+        <p>مراقبة الفواتير <span class="green-word">وتستهدف</span> الكشف المبكر عن المخالفات وحالات عدم التطابق</p>
+      </div>
+
+      <div class="verif-stats">
+        <div class="verif-stat">
+          <div class="verif-stat-val" style="color:var(--amber)">563</div>
+          <div class="verif-stat-label">قيد التحقق</div>
+        </div>
+        <div class="verif-stat">
+          <div class="verif-stat-val" style="color:var(--gold)">47</div>
+          <div class="verif-stat-label">تحتاج مراجعة</div>
+        </div>
+        <div class="verif-stat">
+          <div class="verif-stat-val" style="color:var(--red)">12</div>
+          <div class="verif-stat-label">فواتير مكررة</div>
+        </div>
+        <div class="verif-stat">
+          <div class="verif-stat-val" style="color:var(--red)">8</div>
+          <div class="verif-stat-label">غير مطابقة</div>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <h3>قائمة الفواتير قيد التحقق</h3>
+        <div class="filter-row">
+          <select class="filter-select">
+            <option>جميع الأنواع</option>
+            <option>قيد التحقق</option>
+            <option>تحتاج مراجعة</option>
+            <option>مكررة</option>
+            <option>غير مطابقة</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>رقم الفاتورة</th>
+              <th>المورد</th>
+              <th>المشتري</th>
+              <th>قيمة الضريبة</th>
+              <th>سبب التحقق</th>
+              <th>الحالة</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="cell-id">INV-2025-00840</td>
+              <td class="cell-company">مؤسسة النخبة للخدمات</td>
+              <td class="cell-company">شركة الوطنية للتقنية</td>
+              <td>٣٬٢٢٠ ر.س</td>
+              <td style="font-size:12.5px;color:var(--amber)">تطابق في الرقم الضريبي</td>
+              <td><span class="badge pending"><span class="badge-dot"></span>قيد التحقق</span></td>
+            </tr>
+            <tr>
+              <td class="cell-id">INV-2025-00835</td>
+              <td class="cell-company">شركة المثلث للتجارة</td>
+              <td class="cell-company">مؤسسة سداد</td>
+              <td>١٬١٠٠ ر.س</td>
+              <td style="font-size:12.5px;color:var(--red)">فاتورة مكررة محتملة</td>
+              <td><span class="badge rejected"><span class="badge-dot"></span>مرفوض</span></td>
+            </tr>
+            <tr>
+              <td class="cell-id">INV-2025-00829</td>
+              <td class="cell-company">مجموعة الضحيان</td>
+              <td class="cell-company">وزارة المالية</td>
+              <td>٩٬٨٠٠ ر.س</td>
+              <td style="font-size:12.5px;color:var(--amber)">قيمة الضريبة غير متطابقة</td>
+              <td><span class="badge pending"><span class="badge-dot"></span>قيد التحقق</span></td>
+            </tr>
+            <tr>
+              <td class="cell-id">INV-2025-00820</td>
+              <td class="cell-company">شركة الرواد للتطوير</td>
+              <td class="cell-company">شركة stc</td>
+              <td>٤٬٥٠٠ ر.س</td>
+              <td style="font-size:12.5px;color:var(--text-muted)">مراجعة دورية</td>
+              <td><span class="badge pending"><span class="badge-dot"></span>قيد التحقق</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ═══════════════ REPORTS ═══════════════ -->
+    <div class="page" id="page-reports">
+      <div class="page-header">
+        <h1>التقارير</h1>
+        <p>تحميل التقارير الرسمية لتقديمها إلى الجهات المعنية</p>
+      </div>
+
+      <div class="reports-grid">
+        <div class="report-card">
+          <div class="report-icon-wrap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+          </div>
+          <div class="report-info">
+            <div class="report-name">التقرير الشهري</div>
+            <div class="report-desc">ملخص الفواتير وحالات الامتثال لشهر يناير 2025</div>
+            <div class="report-size">PDF · 1.2 MB · آخر تحديث: ١ فبراير ٢٠٢٥</div>
+          </div>
+          <button class="download-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="report-card">
+          <div class="report-icon-wrap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+            </svg>
+          </div>
+          <div class="report-info">
+            <div class="report-name">التقرير السنوي</div>
+            <div class="report-desc">تقرير شامل لنشاط الفواتير الإلكترونية خلال عام 2024</div>
+            <div class="report-size">PDF · 4.7 MB · آخر تحديث: ١ يناير ٢٠٢٥</div>
+          </div>
+          <button class="download-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="report-card">
+          <div class="report-icon-wrap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <div class="report-info">
+            <div class="report-name">تقرير الامتثال</div>
+            <div class="report-desc">تقرير مستوى الامتثال الضريبي وفق معايير ZATCA</div>
+            <div class="report-size">PDF · 890 KB · آخر تحديث: ١٦ يناير ٢٠٢٥</div>
+          </div>
+          <button class="download-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="report-card">
+          <div class="report-icon-wrap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+            </svg>
+          </div>
+          <div class="report-info">
+            <div class="report-name">تقرير الضريبة</div>
+            <div class="report-desc">ملخص ضريبة القيمة المضافة لتقديم الإقرار الضريبي</div>
+            <div class="report-size">XLSX · 320 KB · آخر تحديث: ١٥ يناير ٢٠٢٥</div>
+          </div>
+          <button class="download-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ NOTIFICATIONS ═══════════════ -->
+    <div class="page" id="page-notifications">
+      <div class="page-header">
+        <h1>الإشعارات</h1>
+        <p>3 إشعارات غير مقروءة</p>
+      </div>
+
+      <div class="notif-list">
+        <div class="notif-card unread">
+          <div class="notif-icon" style="background:var(--green-bg);border-color:#B6DEC8;color:var(--green)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+          </div>
+          <div class="notif-body">
+            <div class="notif-title">تم اعتماد الفاتورة</div>
+            <div class="notif-sub">تم اعتماد الفاتورة INV-2025-00841 من قِبل هيئة الزكاة والضريبة والجمارك بنجاح</div>
+            <div class="notif-time">منذ 10 دقائق</div>
+          </div>
+        </div>
+
+        <div class="notif-card unread">
+          <div class="notif-icon" style="background:var(--red-bg);border-color:#F5C6C2;color:var(--red)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
+            </svg>
+          </div>
+          <div class="notif-body">
+            <div class="notif-title">تم رفض الفاتورة</div>
+            <div class="notif-sub">الفاتورة INV-2025-00838 مرفوضة بسبب عدم تطابق الرقم الضريبي للمشتري</div>
+            <div class="notif-time">منذ ساعة</div>
+          </div>
+        </div>
+
+        <div class="notif-card unread">
+          <div class="notif-icon" style="background:var(--amber-bg);border-color:#F5DFA0;color:var(--amber)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+          </div>
+          <div class="notif-body">
+            <div class="notif-title">تم انتهاء مهلة المراجعة</div>
+            <div class="notif-sub">انتهت مهلة مراجعة الفاتورة INV-2025-00829 — يرجى اتخاذ الإجراء اللازم</div>
+            <div class="notif-time">منذ 3 ساعات</div>
+          </div>
+        </div>
+
+        <div class="notif-card">
+          <div class="notif-icon" style="background:var(--bg);border-color:var(--border);color:var(--text-mid)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+          </div>
+          <div class="notif-body">
+            <div class="notif-title">تم تعديل بيانات الفاتورة</div>
+            <div class="notif-sub">تم تعديل بيانات الفاتورة INV-2025-00836 من قِبل المشغّل م. خالد السلمي</div>
+            <div class="notif-time">أمس، ٤:٣٠ م</div>
+          </div>
+        </div>
+
+        <div class="notif-card">
+          <div class="notif-icon" style="background:var(--green-bg);border-color:#B6DEC8;color:var(--green)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+          </div>
+          <div class="notif-body">
+            <div class="notif-title">تم اعتماد الفاتورة</div>
+            <div class="notif-sub">تم اعتماد الفاتورة INV-2025-00837 — إجمالي الضريبة ٤٥٬٠٠٠ ر.س</div>
+            <div class="notif-time">أمس، ٢:١٥ م</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- VIDEO MODAL -->
+<div class="modal-overlay" id="videoModal" onclick="closeVideo(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h3>فيديو تعريفي — منصة فوترَة</h3>
+      <button class="modal-close" onclick="closeVideo()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="video-player">
+      <div class="vp-bg"></div>
+      <div class="vp-bar"></div>
+      <div class="vp-content">
+        <div class="vp-logo">فوترَة</div>
+        <div class="vp-tagline">منصة الفوترة الإلكترونية الذكية لدول مجلس التعاون الخليجي</div>
+        <div class="vp-steps">
+          <div class="vp-step">
+            <div class="vp-step-num">01</div>
+            <div class="vp-step-label">إنشاء الفاتورة</div>
+          </div>
+          <div class="vp-step">
+            <div class="vp-step-num">02</div>
+            <div class="vp-step-label">التوقيع الرقمي</div>
+          </div>
+          <div class="vp-step">
+            <div class="vp-step-num">03</div>
+            <div class="vp-step-label">الإرسال لـ ZATCA</div>
+          </div>
+          <div class="vp-step">
+            <div class="vp-step-num">04</div>
+            <div class="vp-step-label">الاعتماد الفوري</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:16px;padding:12px 16px;background:var(--bg);border-radius:8px;font-size:12.5px;color:var(--text-muted);display:flex;align-items:center;gap:10px">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+      منصة فوترَة متوافقة مع متطلبات الفوترة الإلكترونية المرحلة الثانية الصادرة عن هيئة الزكاة والضريبة والجمارك (ZATCA) وتدعم جميع دول مجلس التعاون الخليجي.
+    </div>
+  </div>
+</div>
+
+<script>
+  const pageMap = {
+    home: { id: 'page-home', title: 'لوحة التحكم' },
+    create: { id: 'page-create', title: 'إنشاء فاتورة' },
+    detail: { id: 'page-detail', title: 'تفاصيل الفاتورة' },
+    verification: { id: 'page-verification', title: 'مركز التحقق' },
+    reports: { id: 'page-reports', title: 'التقارير' },
+    notifications: { id: 'page-notifications', title: 'الإشعارات' },
+  };
+
+  function showPage(key) {
+    // Hide all
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+    // Show target
+    const p = pageMap[key];
+    if (!p) return;
+    document.getElementById(p.id).classList.add('active');
+    document.getElementById('topbar-title').textContent = p.title;
+
+    // Mark nav active
+    document.querySelectorAll('.nav-item').forEach(n => {
+      if (n.getAttribute('onclick') === `showPage('${key}')`) {
+        n.classList.add('active');
+      }
+    });
+
+    window.scrollTo(0, 0);
+  }
+
+  function openVideo() {
+    document.getElementById('videoModal').classList.add('open');
+  }
+
+  function closeVideo(e) {
+    if (!e || e.target === document.getElementById('videoModal')) {
+      document.getElementById('videoModal').classList.remove('open');
+    }
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeVideo();
+  });
+</script>
+</body>
+</html>
